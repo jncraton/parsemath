@@ -19,6 +19,8 @@ range(0, 7, 2)
 12
 >>> parsemath("Σ[0,2,...,4²]")
 72
+>>> parsemath("Σ[0,2,...,½ * 4²]")
+20
 
 ```
 """
@@ -27,6 +29,7 @@ import re
 
 def parsemath(expr):
   expr = replace_pow(expr)
+  expr = replace_frac(expr)
 
   for m in re.finditer("\[(.*?),(.*?),...,(.*?)\]", expr):
     new_range = "range(%d,%d,%d)" % (eval(m.group(1)), eval(m.group(3)) + 1, eval(m.group(2)) - eval(m.group(1)))
@@ -45,6 +48,21 @@ def replace_pow(expr):
 
   replacements = [
     ("²","**2"),
+  ]
+
+  for r in replacements:
+    expr = expr.replace(r[0], r[1])
+
+  return expr
+  
+def replace_frac(expr):
+  """
+  >>> replace_frac("½")
+  '1/2'
+  """
+
+  replacements = [
+    ("½","1/2"),
   ]
 
   for r in replacements:
