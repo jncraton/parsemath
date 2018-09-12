@@ -12,10 +12,15 @@ def parsemath(expr):
   range(1, 6)
   >>> parsemath("[0,2,...,6]")
   range(0, 7, 2)
+  >>> parsemath("Σ[0,2,...,6]")
+  12
   """
 
   for m in re.finditer("\[(\d+),(\d+),...,(\d+)\]", expr):
     new_range = "range(%d,%d,%d)" % (int(m.group(1)), int(m.group(3)) + 1, int(m.group(2)) - int(m.group(1)))
     expr = expr.replace(m.group(0), new_range)
+
+  expr += ")" * expr.count("Σ")
+  expr = expr.replace("Σ", "sum(")
   
   return eval(expr)
