@@ -11,12 +11,10 @@ def parsemath(expr):
   >>> parsemath("[1,2,...,5]")
   range(1, 6)
   >>> parsemath("[0,2,...,6]")
-  range(1, 7, 2)
+  range(0, 7, 2)
   """
 
-  m = re.search("\[(\d+),(\d+),...,(\d+)\]", expr)
-
-  if m:
+  for m in re.finditer("\[(\d+),(\d+),...,(\d+)\]", expr):
     new_range = "range(%d,%d,%d)" % (int(m.group(1)), int(m.group(3)) + 1, int(m.group(2)) - int(m.group(1)))
     expr = expr.replace(m.group(0), new_range)
   
