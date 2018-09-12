@@ -7,6 +7,8 @@ os:
     - linux
 dist:
     - xenial
+before_install:
+    - sudo apt update
 install:
     - pip3 install -r requirements.txt
 script:
